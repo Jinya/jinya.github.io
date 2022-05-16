@@ -1,2 +1,0 @@
-# jinya.github.io
- 

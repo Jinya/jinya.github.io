@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <title>Mac 开发环境配置 | Jinya's Blog</title>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="index, follow">
+<meta name="description" content="Jinya's Blog" />
+<meta name="keywords" content="iOS, iPhone, iPad, app, macOS, OS X, Mac, Apple, Xcode, Swift, SwiftUI, UIKit, Cocoa" />
+<meta name="author" content="Jinya" />
+
+<link rel="shortcut icon" href="/favicon.png" />
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+
+<link rel="stylesheet" href="/css/default.css" />
+<link rel="stylesheet" href="/css/animations.css" />
+
+</head>
+<body>
+  <header role="banner" id="post-head">
+    <div class="container">
+      <a href="/" class="logo"><img src="/img/logo@2x.png" alt="Logo" /></a>
+    </div>
+  </header>
+
+  <section role="main" class="container">
+	  <article>
+	    <header>
+		    <p class="meta" id="time"><time datetime="2022-05-08"><a href="https://jinya.github.io/2022/05/">May</a> 08, 2022</time></p>
+	      <h1>Mac 开发环境配置</h1>
+	    </header>
+	    <section class="content">
+	      <h2>缘由</h2>
+
+<p>今天笔者将闲置的一台老 Inter MacBook Pro 还原重装 macOS Big Sur，借此一并整理下环境配置清单。</p>
+
+<hr />
+
+<h2>Xcode</h2>
+
+<p><strike>一台没有安装 Xcode 的 Mac 是没有灵魂的</strike>。</p>
+
+<ul>
+<li>一般直接前往 Mac App Store 下载，简单省事。</li>
+<li>如果需要安装多个版本 Xcode，推荐使用 <a href="https://github.com/RobotsAndPencils/XcodesApp">XcodesApp</a>。</li>
+</ul>
+
+<h2>Oh My Zsh</h2>
+
+<p><a href="https://ohmyz.sh/">Oh My Zsh</a> 是笔者日常使用的终端。</p>
+
+<div class="code"><pre><span></span><code>sh -c <span class="code-s2">&quot;</span><span class="code-k">$(</span>curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="code-k">)</span><span class="code-s2">&quot;</span>
+</code></pre></div>
+
+<h2>Homebrew</h2>
+
+<p>为了方便统一管理，尽量只使用 <a href="https://brew.sh/index_zh-cn"><code>Homebrew</code></a> 来下载软件包。</p>
+
+<div class="code"><pre><span></span><code>/bin/bash -c <span class="code-s2">&quot;</span><span class="code-k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="code-k">)</span><span class="code-s2">&quot;</span>
+</code></pre></div>
+
+<h2>rbenv</h2>
+
+<p>Ruby 版本管理工具，文档详见 <a href="https://github.com/rbenv/rbenv/blob/master/README.md"><code>rbenv</code> README</a>。</p>
+
+<div class="code"><pre><span></span><code>brew install rbenv ruby-build
+
+rbenv init
+
+<span class="code-c1"># Close the Terminal window and open a new one so your changes take effect.</span>
+<span class="code-c1"># Verify that rbenv is properly set up using this rbenv-doctor script</span>
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-doctor <span class="code-p">|</span> bash
+
+<span class="code-c1"># Manually add ~/.rbenv/bin to your $PATH for access to the rbenv command-line utility.</span>
+<span class="code-c1"># zsh</span>
+<span class="code-nb">echo</span> <span class="code-s1">&#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.zshrc
+
+<span class="code-c1"># List latest stable versions</span>
+rbenv install -l
+
+rbenv install <span class="code-m">2</span>.7.6
+rbenv global <span class="code-m">2</span>.7.6
+rbenv versions
+
+<span class="code-c1"># Installs shims for all Ruby executables known to rbenv (i.e., ~/.rbenv/versions/*/bin/*).</span>
+<span class="code-c1"># Run this command after you install a new version of Ruby, or install a gem that provides commands.</span>
+rbenv rehash
+</code></pre></div>
+
+<p><a href="https://github.com/rbenv/rbenv#understanding-shims">Understanding Shims</a></p>
+
+<h2>RubyGems</h2>
+
+<div class="code"><pre><span></span><code>gem install bundler
+
+<span class="code-c1"># Check the location where gems are being installed.</span>
+<span class="code-c1"># ~/.rbenv/versions/&lt;ruby-version&gt;/lib/ruby/gems/...</span>
+gem env home
+</code></pre></div>
+
+<h2>pyenv</h2>
+
+<p>Python 版本管理工具，文档详见 <a href="https://github.com/pyenv/pyenv/blob/master/README.md"><code>pyenv</code> README</a>。</p>
+
+<div class="code"><pre><span></span><code>brew install pyenv
+
+<span class="code-c1"># zsh</span>
+<span class="code-nb">echo</span> <span class="code-s1">&#39;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#39;</span> &gt;&gt; ~/.zshrc
+<span class="code-nb">echo</span> <span class="code-s1">&#39;command -v pyenv &gt;/dev/null || export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.zshrc
+<span class="code-nb">echo</span> <span class="code-s1">&#39;eval &quot;$(pyenv init -)&quot;&#39;</span> &gt;&gt; ~/.zshrc
+
+pyenv install <span class="code-m">3</span>.10.4
+pyenv global <span class="code-m">3</span>.10.4
+pyenv versions
+</code></pre></div>
+
+<h2>CocoaPods</h2>
+
+<p><a href="https://cocoapods.org/">官方文档</a></p>
+
+<div class="code"><pre><span></span><code>brew install cocoapods
+</code></pre></div>
+
+<h2>fastlane</h2>
+
+<p><a href="https://docs.fastlane.tools">官方文档</a></p>
+
+<div class="code"><pre><span></span><code>brew install fastlane
+</code></pre></div>
+
+	    </section>
+	    <footer role="contentinfo" class="post-footer">
+ 		    <p class="meta" id="tags"><a href="/tags/macOS">macOS</a>, <a href="/tags/tools">tools</a></p>
+         <a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-text="Mac 开发环境配置 by @JinyaMax">Tweet</a>
+         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	    </footer>
+	  </article>  
+  </section>
+    
+  <footer id="footer">
+    <section class="container">
+    <p><a href="/feed.xml">RSS</a></p>
+  <p>Powered by <a href="https://github.com/an0/Letterpress">Letterpress</a>.</p>
+</section>
+  </footer>
+</body>
+</html>
